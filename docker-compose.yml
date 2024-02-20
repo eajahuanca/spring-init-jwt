@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  viaticos-db:
+    container_name: viaticos-db
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sistemas
+      POSTGRES_DB: db_viaticos
+    ports:
+      - 5432:5432
+
+  viaticos-app:
+    container_name: viaticos-app
+    image: viaticos-app:1.0.0
+    build: .
+    ports:
+      - 8090:8090
+    depends_on:
+      - viaticos-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://viaticos-db:5432/db_viaticos
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: sistemas
